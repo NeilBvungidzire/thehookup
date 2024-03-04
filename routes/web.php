@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\LoginController;
@@ -83,8 +84,6 @@ Route::group(['prefix' => 'posts'], function () {
     Route::get('/', [PostController::class, 'index'])->name('posts.index');
     Route::get('/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/store', [PostController::class, 'store'])->name('posts.store');
-    Route::get('/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
-    Route::put('/update/{id}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/delete/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
     Route::get('/show/{id}', [PostController::class, 'show'])->name('posts.show');
 });
@@ -93,4 +92,10 @@ Route::group(['prefix' => 'posts'], function () {
 Route::group(['prefix' => 'likes'], function () {
     Route::post('/store', [LikeController::class, 'store'])->name('likes.store');
     Route::delete('/delete/{id}', [LikeController::class, 'destroy'])->name('likes.destroy');
+});
+
+// Comment routes
+Route::group(['prefix' => 'comments'], function () {
+    Route::post('/store/{commentableId}', [CommentController::class, 'store'])->name('comments.store');
+    Route::delete('/delete/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
