@@ -5,74 +5,105 @@
 @section('content')
     <div class="container mx-auto mt-8">
         <div class="flex justify-center">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="w-full md:w-2/3 lg:w-1/2">
                 @foreach ($posts as $post)
-                    <div class="bg-white p-4 rounded-lg shadow-md">
+                    <div class="bg-white p-4 rounded-lg shadow-lg mb-6">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center">
                                 <img src="{{ $post->user->profile_photo_url ?: asset('images/logo-main.png') }}"
-                                    alt="{{ $post->user->username }}" class="w-10 h-10 rounded-full mr-2">
-
+                                    alt="{{ $post->user->username }}" class="w-12 h-12 rounded-full mr-3">
                                 <div>
-                                    <h2 class="text-lg font-semibold">
+                                    <h2 class="text-lg font-semibold text-gray-900">
                                         @if ($post->user->id === auth()->id())
                                             You
                                         @else
                                             {{ $post->user->username }}
                                         @endif
                                     </h2>
-                                    <p class="text-gray-500 italic font-thin">{{ $post->created_at->diffForHumans() }}</p>
+                                    <p class="text-gray-500 text-sm">{{ $post->created_at->diffForHumans() }}</p>
                                 </div>
                             </div>
                         </div>
-                        <p>{{ $post->content }}</p>
-                        <div class="mt-4">
-                            <div class="flex items-center">
-                                <!-- Like button -->
-                                <form action="{{ route('likes.store', ['post' => $post->id]) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="text-gray-500 hover:text-blue-500 mr-4">
-                                        {{ $post->likes_count ?? 0 }} <i class="far fa-thumbs-up"></i>
-                                    </button>
-                                </form>
+                        <p class="text-gray-800 text-sm">{{ $post->content }}</p>
+                        <div class="mt-4 border-t pt-4">
+                            <div class="flex justify-between items-center">
+                                <!-- Like/Unlike button -->
+                                @php
+                                    $userLike = $post->likes->where('user_id', auth()->id())->first();
+                                @endphp
 
-                                <!-- Add Comment button -->
-                                <button class="text-gray-500 hover:text-blue-500"
+                                <div>
+                                    @php
+                                        $userLike = $post->likes->where('user_id', auth()->id())->first();
+                                        $likesCount = $post->likes->count();
+                                    @endphp
+
+                                    @if (!$userLike)
+                                        <form action="{{ route('likes.store', ['postId' => $post->id]) }}" method="POST"
+                                            class="inline-block">
+                                            @csrf
+                                            <button type="submit"
+                                                class="flex items-center space-x-1 text-gray-500 hover:text-blue-600 focus:outline-none">
+                                                <i class="far fa-thumbs-up"></i>
+                                                <span>Like</span>
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('likes.destroy', ['postId' => $post->id]) }}" method="POST"
+                                            class="inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="flex items-center space-x-1 text-gray-500 hover:text-red-600 focus:outline-none">
+                                                <i class="fas fa-thumbs-up"></i>
+                                                <span>Unlike</span>
+                                            </button>
+                                        </form>
+                                    @endif
+                                    <span class="ml-2 text-gray-600">{{ $likesCount }}
+                                        {{ Str::plural('Like', $likesCount) }}</span>
+                                </div>
+
+
+
+                                <!-- Comment button -->
+                                <button class="flex items-center text-gray-500 hover:text-blue-600"
                                     onclick="toggleCommentForm({{ $post->id }})">
-                                    <i class="far fa-comment"></i> Add Comment
+                                    <i class="far fa-comment mr-1"></i> Comment
                                 </button>
                             </div>
+
+                            <!-- Comments form (hidden by default) -->
                             <div id="comment-form-{{ $post->id }}" class="hidden mt-4">
                                 <form action="{{ route('comments.store', ['commentableId' => $post->id]) }}" method="POST"
-                                    class="flex mt-4">
+                                    class="flex">
                                     @csrf
                                     <input type="text" name="content"
-                                        class="flex-1 border rounded-l-md py-2 px-3 focus:outline-none focus:border-blue-500"
+                                        class="flex-1 border rounded-l-lg py-2 px-4 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         placeholder="Write a comment...">
                                     <button type="submit"
-                                        class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600">
-                                        <i class="fas fa-envelope"></i>
+                                        class="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700">
+                                        Post
                                     </button>
                                 </form>
-
                             </div>
-                            <h3 class="text-lg font-semibold pt-2 pb-2">
-                                <span class="text-gray-500">
-                                    <span class="font-bold">{{ $post->comments->count() ?: 'No' }}</span>
-                                    comment{{ $post->comments->count() !== 1 ? 's' : '' }}
-                                </span>
-                            </h3>
 
-
+                            <!-- Comments display -->
                             @if ($post->comments->isNotEmpty())
-                                <div class="space-y-4">
+                                <div class="mt-4">
                                     @foreach ($post->comments as $comment)
-                                        <div class="flex items-center">
-                                            <img src="{{ $post->user->profile_photo_url ?: asset('images/logo-main.png') }}"
-                                                alt="{{ $post->user->username }}" class="w-10 h-10 rounded-full mr-2">
-                                            <div>
-                                                <h4 class="text-sm font-semibold">{{ $comment->user->username }}</h4>
-                                                <p class="text-xs text-gray-500">
+                                        <div class="flex items-start mt-2">
+                                            <img src="{{ $comment->user->profile_photo_url ?: asset('images/logo-main.png') }}"
+                                                alt="{{ $comment->user->username }}" class="w-8 h-8 rounded-full mr-2">
+                                            <div class="bg-gray-100 rounded-lg p-2 flex-1">
+                                                <h4 class="text-sm font-semibold">
+                                                    @if ($comment->user->id === auth()->id())
+                                                        You
+                                                    @else
+                                                        {{ $comment->user->username }}
+                                                    @endif
+                                                </h4>
+                                                <p class="text-xs text-gray-600">
                                                     {{ $comment->created_at->diffForHumans() }}</p>
                                                 <p class="text-sm">{{ $comment->body }}</p>
                                             </div>

@@ -69,7 +69,7 @@ Route::middleware('guest')->group(function () {
 
 
 // Feed routes
-Route::group(['prefix' => 'feeds'], function () {
+Route::group(['prefix' => 'feeds', 'middleware' => 'auth'], function () {
     Route::get('/', [FeedController::class, 'index'])->name('feeds.index');
     Route::get('/create', [FeedController::class, 'create'])->name('feeds.create');
     Route::post('/store', [FeedController::class, 'store'])->name('feeds.store');
@@ -80,7 +80,7 @@ Route::group(['prefix' => 'feeds'], function () {
 });
 
 // Post routes
-Route::group(['prefix' => 'posts'], function () {
+Route::group(['prefix' => 'posts', 'middleware' => 'auth'], function () {
     Route::get('/', [PostController::class, 'index'])->name('posts.index');
     Route::get('/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/store', [PostController::class, 'store'])->name('posts.store');
@@ -89,13 +89,13 @@ Route::group(['prefix' => 'posts'], function () {
 });
 
 // Like routes
-Route::group(['prefix' => 'likes'], function () {
-    Route::post('/store', [LikeController::class, 'store'])->name('likes.store');
-    Route::delete('/delete/{id}', [LikeController::class, 'destroy'])->name('likes.destroy');
+Route::group(['prefix' => 'likes', 'middleware' => 'auth'], function () {
+    Route::post('/store/{postId}', [LikeController::class, 'store'])->name('likes.store');
+    Route::delete('/delete/{postId}', [LikeController::class, 'destroy'])->name('likes.destroy');
 });
 
 // Comment routes
-Route::group(['prefix' => 'comments'], function () {
+Route::group(['prefix' => 'comments', 'middleware' => 'auth'], function () {
     Route::post('/store/{commentableId}', [CommentController::class, 'store'])->name('comments.store');
     Route::delete('/delete/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
