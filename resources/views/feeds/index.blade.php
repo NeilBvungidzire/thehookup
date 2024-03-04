@@ -10,7 +10,7 @@
                     <div class="bg-white p-4 rounded-lg shadow-lg mb-6">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center">
-                                <img src="{{ $post->user->profile_photo_url ?: asset('images/logo-main.png') }}"
+                                <img src="{{ $post->user->profile_photo_url ?: asset('images/default-profile.png') }}"
                                     alt="{{ $post->user->username }}" class="w-12 h-12 rounded-full mr-3">
                                 <div>
                                     <h2 class="text-lg font-semibold text-gray-900">
@@ -93,7 +93,7 @@
                                 <div class="mt-4">
                                     @foreach ($post->comments as $comment)
                                         <div class="flex items-start mt-2">
-                                            <img src="{{ $comment->user->profile_photo_url ?: asset('images/logo-main.png') }}"
+                                            <img src="{{ $comment->user->profile_photo_url ?: asset('images/default-profile.png') }}"
                                                 alt="{{ $comment->user->username }}" class="w-8 h-8 rounded-full mr-2">
                                             <div class="bg-gray-100 rounded-lg p-2 flex-1">
                                                 <h4 class="text-sm font-semibold">
