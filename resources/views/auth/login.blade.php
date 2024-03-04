@@ -17,7 +17,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100%;
+            height: 100vh;
         }
 
         .form-container {
@@ -30,11 +30,24 @@
             width: calc(100% - 1.5rem);
             padding: 0.75rem;
             margin-bottom: 1rem;
+            border: 1px solid #d1d5db;
+            /* Add border */
+            border-radius: 0.25rem;
+            /* Add border radius */
         }
 
         .form-container button[type="submit"] {
             width: 94%;
             padding: 0.75rem;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            /* Error message color */
+            font-size: 0.875rem;
+            /* Adjust font size */
+            margin-top: 0.25rem;
+            /* Add margin top */
         }
     </style>
 </head>
@@ -49,21 +62,26 @@
                 @csrf
 
                 <div class="mb-4">
-                    <input id="username" type="text" class="border border-gray-300 rounded-md w-full"
-                        name="username" value="{{ old('username') }}" required autocomplete="username"
+                    <input id="username" type="text" class="rounded-md w-full" name="username"
+                        value="{{ old('username') }}" required autocomplete="username"
                         placeholder="Enter your username">
                     @error('username')
-                        <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
+                    @error('login')
+                        <p class="error-message">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="mb-4">
-                    <input id="password" type="password" class="border border-gray-300 rounded-md w-full"
-                        name="password" required autocomplete="current-password" placeholder="Enter your password">
+                    <input id="password" type="password" class="rounded-md w-full" name="password" required
+                        autocomplete="current-password" placeholder="Enter your password">
                     @error('password')
-                        <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        <p class="error-message">{{ $message }}</p>
                     @enderror
                 </div>
+
+
 
                 <div>
                     <button type="submit"

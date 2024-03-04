@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'TheHookUp')</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="images/logo-main.png" />
     <style>
@@ -23,7 +22,6 @@
             margin-top: auto;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js"></script>
 </head>
 
 <body class="bg-gray-100">
@@ -74,6 +72,7 @@
         <main>
             @yield('content')
         </main>
+        <x-flash-message />
     </div>
 
     <!-- Footer -->
@@ -84,6 +83,9 @@
     </footer>
 
     <!-- Script for logout dropdown -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var timeout;
@@ -117,8 +119,6 @@
             });
         });
     </script>
-
-
 </body>
 
 </html>

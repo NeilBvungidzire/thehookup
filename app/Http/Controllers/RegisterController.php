@@ -14,7 +14,8 @@ class RegisterController extends Controller
     }
 
     public function register(Request $request)
-        {
+    {
+        try {
             $formFields = $request->validate([
                 'username' => [
                     'required',
@@ -28,11 +29,14 @@ class RegisterController extends Controller
             $formFields['password'] = bcrypt($formFields['password']);
             $formFields['last_active'] = now();
 
-
             $user = User::create($formFields);
 
             auth()->login($user);
 
-            return redirect('/')->with('message', 'User created and logged in!');
+            return redirect()->route('feeds.index')->with('message', 'User created and logged in!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['register' => 'User registration failed!' . $th->getMessage()]);
         }
+    }
+
 }

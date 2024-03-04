@@ -13,16 +13,22 @@ class LoginController extends Controller
 
     public function authenticate(Request $request)
     {
-        $formFields = $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-        ]);
+        try {
+            $formFields = $request->validate([
+                'username' => 'required',
+                'password' => 'required',
+            ]);
 
-        if (auth()->attempt($formFields)) {
-            $request->session()->regenerate();
-            return redirect('/')->with('message', 'You are now logged in!');
-        } else {
-            return redirect()->back()->with('message', 'Invalid credentials!');
+            if (auth()->attempt($formFields)) {
+                $request->session()->regenerate();
+                return redirect()->route('feeds.index')->with('success', 'You are now logged in!');
+            } else {
+                return redirect()->back()->withErrors(['login' => 'Invalid credentials!']);
+            }
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['login' => 'Login failed!' . $th->getMessage()]);
         }
+
     }
+
 }
