@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Home route
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
+
 // Authentication routes
 Route::post('/users/register', [RegisterController::class, 'register'])->name('register.submit');
 Route::post('/users/login', [LoginController::class, 'authenticate'])->name('login.submit');

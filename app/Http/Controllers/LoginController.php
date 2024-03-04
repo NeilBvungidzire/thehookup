@@ -20,9 +20,10 @@ class LoginController extends Controller
 
         if (auth()->attempt($formFields)) {
             $request->session()->regenerate();
-            return redirect('/')->with('message', 'You are now logged in!');
+            return redirect()->route('home')->with('success', 'You are now logged in!');
         } else {
-            return redirect()->back()->with('message', 'Invalid credentials!');
+            return redirect()->back()->withErrors(['login' => 'Invalid credentials!']);
         }
     }
+
 }
