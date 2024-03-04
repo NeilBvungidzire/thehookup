@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\FriendController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -98,4 +99,14 @@ Route::group(['prefix' => 'likes', 'middleware' => 'auth'], function () {
 Route::group(['prefix' => 'comments', 'middleware' => 'auth'], function () {
     Route::post('/store/{commentableId}', [CommentController::class, 'store'])->name('comments.store');
     Route::delete('/delete/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
+});
+
+// Friends routes
+Route::group(['prefix' => 'friends', 'middleware' => 'auth'], function () {
+    Route::get('/', [FriendController::class, 'index'])->name('friends.index');
+    Route::get('/create', [FriendController::class, 'create'])->name('friends.create');
+    Route::post('/store', [FriendController::class, 'store'])->name('friends.store');
+    Route::delete('/delete/{id}', [FriendController::class, 'destroy'])->name('friends.destroy');
+    Route::get('/show/{id}', [FriendController::class, 'show'])->name('friends.show');
+    Route::delete('/delete/{id}', [FriendController::class, 'destroy'])->name('friends.destroy');
 });

@@ -39,7 +39,7 @@
 
             <!-- Navbar Links -->
             <ul class="flex space-x-4">
-                <li><a href="/" class="text-white flex items-center"><i class="fas fa-rss mr-1"></i> Feed</a></li>
+                <li><a href="/feeds" class="text-white flex items-center"><i class="fas fa-rss mr-1"></i> Feed</a></li>
                 <li><a href="/friends" class="text-white flex items-center"><i class="fas fa-user-friends mr-1"></i>
                         Friends</a></li>
                 <li><a href="/profile" class="text-white flex items-center"><i class="fas fa-user mr-1"></i> Profile</a>
