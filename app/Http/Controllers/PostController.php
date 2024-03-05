@@ -36,7 +36,7 @@ class PostController extends Controller
             $post->content = $request->input('content');
             $post->save();
 
-            return redirect()->route('feeds.index')->with('success', 'Post created successfully.');
+            return redirect()->back()->with('success', 'Post created successfully.');
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {

@@ -28,14 +28,14 @@
                 <div class="grid grid-cols-3 gap-4">
                     @forelse($otherUsers as $otherUser)
                         <div class="bg-white rounded-lg overflow-hidden shadow-md">
-                            <img src="{{ $otherUser->profile->image->url ?? asset('images/default-profile.png') }}"
+                            <img src="{{ $otherUser->image->url ?? asset('images/default-profile.png') }}"
                                 alt="{{ $otherUser->username }}" class="w-full h-40 object-cover">
                             <div class="p-4">
-                                <h3 class="font-bold">{{ $otherUser->profile->first_name }}
-                                    {{ $otherUser->profile->last_name }}</h3>
-                                <p>{{ $otherUser->profile->bio }}</p>
+                                <h3 class="font-bold">{{ $otherUser->first_name }}
+                                    {{ $otherUser->last_name }}</h3>
+                                <p>{{ $otherUser->bio }}</p>
                                 <div class="mt-2">
-                                    <span>{{ $otherUser->friends()->count() }} mutual friends</span>
+                                    <span>{{ $user->friends()->count() }} mutual friends</span>
                                 </div>
                                 <div class="flex justify-between items-center mt-4">
                                     <button

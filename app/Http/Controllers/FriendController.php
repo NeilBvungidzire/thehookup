@@ -22,7 +22,9 @@ class FriendController extends Controller
             $otherUsers = Profile::where('user_id', '!=', $user->id)
                         ->get();
 
-            return view('friends.index', compact('friends', 'otherUsers', 'friendRequests'));
+                        // dd($otherUsers);
+
+            return view('friends.index', compact('friends', 'otherUsers', 'friendRequests', 'user'));
         } catch (\Exception $e) {
             return back()->with('error', 'An error occurred while retrieving your friends and other users.' . $e->getMessage());
         }
