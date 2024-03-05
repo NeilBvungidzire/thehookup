@@ -22,18 +22,20 @@
 
             <!-- Main Content for People You May Know -->
             <div class="w-3/5 px-4">
-                <h2 class="text-2xl font-bold mb-4">Hookups you may know</h2>
+                <div class="flex justify-center items-center col-span-3">
+                    <h2 class="text-xl font-bold mb-4">Hookups you may know</h2>
+                </div>
                 <div class="grid grid-cols-3 gap-4">
-                    @foreach ($otherUsers as $otherUser)
+                    @forelse($otherUsers as $otherUser)
                         <div class="bg-white rounded-lg overflow-hidden shadow-md">
-                            <img src="{{ $otherUser->profile->image->url ?? asset('images/default-profile.png') }}"
+                            <img src="{{ $otherUser->image->url ?? asset('images/default-profile.png') }}"
                                 alt="{{ $otherUser->username }}" class="w-full h-40 object-cover">
                             <div class="p-4">
-                                <h3 class="font-bold">{{ $otherUser->profile->first_name }}
-                                    {{ $otherUser->profile->last_name }}</h3>
-                                <p>{{ $otherUser->profile->bio }}</p>
+                                <h3 class="font-bold">{{ $otherUser->first_name }}
+                                    {{ $otherUser->last_name }}</h3>
+                                <p>{{ $otherUser->bio }}</p>
                                 <div class="mt-2">
-                                    <span>{{ $otherUser->friends()->count() }} mutual friends</span>
+                                    <span>{{ $user->friends()->count() }} mutual friends</span>
                                 </div>
                                 <div class="flex justify-between items-center mt-4">
                                     <button
@@ -44,7 +46,11 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="flex justify-center items-center col-span-3">
+                            <p>Congratulations! You're the the first to join TheHookUp!</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
             <!-- Right Sidebar for Friend Requests -->

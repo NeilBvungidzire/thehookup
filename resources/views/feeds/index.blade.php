@@ -6,6 +6,7 @@
     <div class="container mx-auto mt-8">
         <div class="flex justify-center">
             <div class="w-full md:w-2/3 lg:w-1/2">
+                <x-add-post />
                 @foreach ($posts as $post)
                     <div class="bg-white p-4 rounded-lg shadow-lg mb-6">
                         <div class="flex items-center justify-between mb-4">
